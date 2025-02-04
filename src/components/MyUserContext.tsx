@@ -1,64 +1,56 @@
 import { createContext, useReducer } from "react";
 import { Action, User } from "../Types";
-import Login from "./Login";
 
-const userReducer = (state: User, action: Action): User =>{
-    switch(action.type){
-        case('CREATE'):
-            console.log('create new user');
-            
-            return{
-                id: action.data.id ?? state.id,
-                firstName: action.data.firstName ?? state.firstName,
-                lastName: state.lastName,
-                email: state.email,
-                password: action.data.password ?? state.password,
-                phone: state.phone
-            }
-        
-        case('UPDATE'):
-            console.log('update');
-            
-            return{
-                id: action.data.id ?? '',
-                firstName: action.data.firstName ?? state.firstName,
-                lastName: action.data.lastName ?? state.lastName,
-                email: action.data.email ?? state.email,
-                password: action.data.password ?? state.password,
-                phone: action.data.phone ?? state.phone
-            }
+const userReducer = (state: User, action: Action): User => {
+  switch (action.type) {
+    case "CREATE":
+      console.log("create new user");
+      return {
+        ...state,
+        id: action.data.id ?? state.id,
+        firstName: action.data.firstName ?? state.firstName,
+        email: action.data.email ?? state.email,
+        password: action.data.password ?? state.password,
+      };
 
-        case('DELETE'):
-            return state
-        
-        default:
-            return state
-        
-    }
-}
+    case "UPDATE":
+      console.log("update");
+      return {
+        ...state,
+        ...action.data,
+      };
+
+    case "DELETE":
+      return emptyUser; 
+
+    default:
+      return state;
+  }
+};
+
 export const emptyUser: User = {
-    id: '',
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    phone: '',
+  id: "",
+  firstName: "",
+  lastName: "",
+  email: "",
+  password: "",
+  phone: "",
 };
 
 export const UserContext = createContext<{
-    user: User;
-    dispatch: React.Dispatch<Action>;
-  }>({
-    user: emptyUser,
-    dispatch: () => {},
+  user: User;
+  dispatch: React.Dispatch<Action>;
+}>({
+  user: emptyUser,
+  dispatch: () => {},
 });
-const MyUserContext = () =>{
-    const [user, dispatch] = useReducer(userReducer,emptyUser)
-    return<>
-    <UserContext value={{user, dispatch}}>
-        <Login/>
+
+const MyUserContext = ({ children }: { children: React.ReactNode }) => {
+  const [user, dispatch] = useReducer(userReducer, emptyUser);
+  return (
+    <UserContext value={{ user, dispatch }}>
+      {children}
     </UserContext>
-    
-    </>
-}
-export default MyUserContext
+  );
+};
+export default MyUserContext;

@@ -1,6 +1,5 @@
 import { FormEvent, useContext, useRef, useState } from "react";
 import { UserContext } from "./MyUserContext";
-import { Action } from "../Types";
 import NameAvatar from "./NameAvatar";
 import { Box, Button, Modal, TextField } from '@mui/material';
 import axios from 'axios';
@@ -14,7 +13,6 @@ const Login = () => {
   const [connected, setConnected] = useState(false);
   const [entryState, setEntryState] = useState('');
 
-  const userName = useRef<HTMLInputElement>(null);
   const userPassword = useRef<HTMLInputElement>(null);
   const userEmail = useRef<HTMLInputElement>(null);
 
@@ -22,23 +20,15 @@ const Login = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-
-    console.log("Email:", userEmail.current?.value);
-    console.log("Password:", userPassword.current?.value);
-    let response:any = null
+    let response: any = null
     if (entryState == 'login') {
       try {
-         response = await axios.post(`${url}/login`, {
+        response = await axios.post(`${url}/login`, {
           email: userEmail.current?.value,
           password: userPassword.current?.value,
         });
         console.log('Response from server:', response.data);
-        // if (response.data.user && response.data.user.id) {
-        //   localStorage.setItem('userId', response.data.user.id); // שמירת ה-userId
-        //   console.log("התחברות הצליחה, userId נשמר:", localStorage.getItem('userId'));
-        // } else {
-        //   alert("שגיאה בזיהוי המשתמש.");
-        // }
+        dispatch({ type: 'UPDATE', data: response.data.user })
       }
       catch (e) {
         console.error("error with connecting to server");
@@ -46,44 +36,32 @@ const Login = () => {
     }
     else {
       try {
-         response = await axios.post(`${url}/register`, {
+        response = await axios.post(`${url}/register`, {
           email: userEmail.current?.value,
           password: userPassword.current?.value,
         });
+        dispatch({
+          type: 'CREATE', data: {
+            id: response.data.userId,
+            email: userEmail.current?.value,
+            password: userPassword.current?.value
+          }
+        })
         console.log('Response from server:', response.data);
-        // if (response.data.user && response.data.user.id) {
-        //   localStorage.setItem('userId', response.data.user.id); // שמירת ה-userId
-        //   console.log("התחברות הצליחה, userId נשמר:", response.data.user.id);
-        // } else {
-        //   alert("שגיאה בזיהוי המשתמש.");
-        // }
       }
       catch (e) {
         console.error("error with connecting to server");
       }
     }
-    if (response.data.user && response.data.user.id) {
+    if (response.data.user || response.data.user.id) {
       localStorage.setItem('userId', response.data.user.id); // שמירת ה-userId
-      console.log("התחברות הצליחה, userId נשמר:", response.data.user.id);
     } else {
       alert("שגיאה בזיהוי המשתמש.");
     }
-    const action: Action = {
-      type: 'CREATE',
-      data: {
-        id: response.data.user.id, // הוספת ID
-        email: userEmail.current?.value,
-        password: userPassword.current?.value
-      }
-    };
-    dispatch(action)
-    console.log("Current user in context:", user);
-
     localStorage.setItem('formData', JSON.stringify({
       email: userEmail.current?.value || "undefined",
       password: userPassword.current?.value || "undefined"
     }));
-    
     setConnected(true);
     setOpen(false)
   }

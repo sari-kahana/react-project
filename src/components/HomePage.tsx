@@ -1,65 +1,40 @@
-import { act, createContext, useReducer } from "react"
-import { Action, User } from "../Types"
-import Login from "./Login"
-import { Typography } from "@mui/material"
-// export const UserIdContext = createContext<number>(0);
+import { Typography, Box } from "@mui/material";
+import { GiCook, GiForkKnifeSpoon } from "react-icons/gi";
+import { FaUtensils } from "react-icons/fa";
+import { motion } from "framer-motion";
 
-// const userReducer = (state: User, action: Action): User =>{
-//     switch(action.type){
-//         case('CREATE'):
-//             console.log('create new user');
-            
-//             return{
-//                 id: action.data.id ?? state.id,
-//                 firstName: action.data.firstName ?? state.firstName,
-//                 lastName: state.lastName,
-//                 email: state.email,
-//                 password: action.data.password ?? state.password,
-//                 phone: state.phone
-//             }
-        
-//         case('UPDATE'):
-//             console.log('update');
-            
-//             return{
-//                 id: action.data.id ?? '',
-//                 firstName: action.data.firstName ?? state.firstName,
-//                 lastName: action.data.lastName ?? state.lastName,
-//                 email: action.data.email ?? state.email,
-//                 password: action.data.password ?? state.password,
-//                 phone: action.data.phone ?? state.phone
-//             }
-
-//         case('DELETE'):
-//             return state
-        
-//         default:
-//             return state
-        
-//     }
-// }
-
-// export const emptyUser: User = {
-//     id: '',
-//     firstName: '',
-//     lastName: '',
-//     email: '',
-//     password: '',
-//     phone: '',
-// };
-
-// export const UserContext = createContext<{
-//     user: User;
-//     dispatch: React.Dispatch<Action>;
-//   }>({
-//     user: emptyUser,
-//     dispatch: () => {},
-// });
-const HomePage = () =>{
-    // const [user, dispatch] = useReducer(userReducer,emptyUser)
-    return<>
-    <Typography>Welcome To The Recipies World!!!</Typography>
-    
-    </>
-}
-export default HomePage
+const HomePage = () => {
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "100vh",
+        textAlign: "center",
+      }}
+    >
+      <motion.div
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1 }}
+      >
+        <Typography variant="h2" fontWeight="bold" color="#ff7e5f" gutterBottom>
+          Welcome To The Recipes World!
+        </Typography>
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 1, delay: 0.5 }}
+        style={{ display: "flex", gap: "20px", marginTop: "20px" }}
+      >
+        <GiCook size={60} color="#ff7e5f" />
+        <FaUtensils size={60} color="#ff7e5f" />
+        <GiForkKnifeSpoon size={60} color="#ff7e5f" />
+      </motion.div>
+    </Box>
+  );
+};
+export default HomePage;

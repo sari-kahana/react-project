@@ -6,12 +6,13 @@ import { UserContext } from "./MyUserContext";
 
 const Menu = () => {
     const [isConnected, setIsConnected] = useState(false);
-    const context = useContext(UserContext);
+    const { user } = useContext(UserContext)
+
     useEffect(() => {
-        if (context?.user.id) {
+        if (user.id) {
             setIsConnected(true);
         }
-    }, [context?.user.id]);
+    }, [user.id]);
 
     return (
         <>

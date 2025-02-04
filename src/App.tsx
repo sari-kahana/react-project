@@ -1,22 +1,16 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
-import Login from './components/Login'
-import HomePage from './components/HomePage'
 import Router from './components/Router'
 import { RouterProvider } from 'react-router'
 import MyUserContext from './components/MyUserContext'
+import Login from './components/Login';
 
 function App() {
-
   return (
-    <>
-      <MyUserContext/>
-      {/* <HomePage/> */}
-      <RouterProvider router={Router}/>
-    </>
-  )
+    <MyUserContext>
+      <Login/>
+      <RouterProvider router={Router} />
+    </MyUserContext>
+  );
 }
 
-export default App
+export default App;

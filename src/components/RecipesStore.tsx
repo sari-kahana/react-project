@@ -29,27 +29,26 @@ class RecipesStore {
     };
     addRecipe = async (newRecipe: Recipe) => {
 
-        // this.loading = true;
-        const userId = localStorage.getItem('userId'); // שליפת ה-userId מה-LocalStorage
-        console.log("User ID שנשלח:", userId);  // בדיקת הערך
+        this.loading = true;
+        const userId = localStorage.getItem('userId'); 
+        console.log("User ID שנשלח:", userId);  
         try {
             const response = await axios.post('http://localhost:3000/api/recipes', newRecipe, {
                 headers: {
-                    'user-id': userId  // הוספת ה-Header החשוב
+                    'user-id': userId 
                 }
             });
             runInAction(() => {
                 this.recipes.push(response.data.recipe);
-                // this.loading = false;
+                this.loading = false;
             });
         } catch (error) {
             runInAction(() => {
-                // this.loading = false;
+                this.loading = false;
             });
             console.error("שגיאה בהוספת המתכון:", error);
         }
     }
-    //};
 }
 const recipesStore = new RecipesStore();
 export default recipesStore;

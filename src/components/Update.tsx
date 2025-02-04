@@ -1,6 +1,6 @@
 import { Box, Button, Modal, TextField } from "@mui/material";
 import { FormEvent, useContext, useRef, useState } from "react";
-import { UserContext} from "./MyUserContext";
+import { UserContext } from "./MyUserContext";
 import axios from "axios";
 import { Action } from "../Types";
 import { styleForm } from "./Style";
@@ -16,15 +16,15 @@ const Update = ({ url }: { url: string }) => {
     const { user, dispatch } = useContext(UserContext);
     const [open, setOpen] = useState(false);
     const Jsondata = localStorage.getItem("formData");
-    let data = {email: "", password: ""};
-    if (Jsondata){
+    let data = { email: "", password: "" };
+    if (Jsondata) {
         data = JSON.parse(Jsondata);
-    } // הוספת הטוקן
+    } 
 
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
-console.log(user);
+        console.log(user);
 
         const action: Action = {
             type: 'UPDATE',
@@ -43,13 +43,13 @@ console.log(user);
         console.log(action.data)
 
         try {
-            const response = await axios.put(`${url}`, action.data,{ headers: { 'user-id': action.data.id } }
-                )        
+            const response = await axios.put(`${url}`, action.data, { headers: { 'user-id': action.data.id } }
+            )
             //(`${url}`, action.data, {
-             //   headers: {
-              //      "Content-Type": "application/json",
-              //      "Authorization": `Bearer ${data}` // 🔥 הוספת הטוקן
-             //   }
+            //   headers: {
+            //      "Content-Type": "application/json",
+            //      "Authorization": `Bearer ${data}` // 🔥 הוספת הטוקן
+            //   }
             //});
         }
         catch (e) {
