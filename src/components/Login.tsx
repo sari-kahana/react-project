@@ -7,9 +7,8 @@ import { styleForm } from "./Style";
 import ErrorSnackbar from "./Error";
 
 const Login = () => {
-
   const url = 'http://localhost:3000/api/user'
-  const { user, dispatch } = useContext(UserContext)
+  const { dispatch } = useContext(UserContext)
   const [open, setOpen] = useState(false);
   const [connected, setConnected] = useState(false);
   const [entryState, setEntryState] = useState('');
@@ -18,7 +17,6 @@ const Login = () => {
 
   const userPassword = useRef<HTMLInputElement>(null);
   const userEmail = useRef<HTMLInputElement>(null);
-
   const openForm = (state: string) => { setOpen(true); setConnected(false); setEntryState(state) }
 
   const handleSubmit = async (e: FormEvent) => {
@@ -67,23 +65,23 @@ const Login = () => {
       setConnected(true);
       setOpen(false)
     }
-    return (
-      <>
-        {!connected && (<Button onClick={() => openForm('login')}>login</Button>)}
-        {!connected && <Button onClick={() => openForm('register')}>register</Button>}
-        <Modal open={open} onClose={() => { setOpen(false) }}>
-          <Box sx={styleForm}>
-            <form onSubmit={handleSubmit}>
-              <TextField label="Email" type="email" required={true} inputRef={userEmail} />
-              <TextField label="Password" type="password" required={true} inputRef={userPassword} />
-              <Button variant="outlined" color='primary' type="submit">send</Button>
-            </form>
-          </Box>
-        </Modal>
-        {connected && <NameAvatar url={url} />}
-        <ErrorSnackbar error={error} open={openSnackbar} onClose={() => setOpenSnackbar(false)} />
-      </>
-    );
-  };
-}
+  }
+  return (
+    <>
+      {!connected && (<Button onClick={() => openForm('login')}>login</Button>)}
+      {!connected && <Button onClick={() => openForm('register')}>register</Button>}
+      <Modal open={open} onClose={() => { setOpen(false) }}>
+        <Box sx={styleForm}>
+          <form onSubmit={handleSubmit}>
+            <TextField label="Email" type="email" required={true} inputRef={userEmail} />
+            <TextField label="Password" type="password" required={true} inputRef={userPassword} />
+            <Button variant="outlined" color='primary' type="submit">send</Button>
+          </form>
+        </Box>
+      </Modal>
+      {connected && <NameAvatar url={url} />}
+      <ErrorSnackbar error={error} open={openSnackbar} onClose={() => setOpenSnackbar(false)} />
+    </>
+  );
+};
 export default Login;
